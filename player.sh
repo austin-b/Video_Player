@@ -26,7 +26,7 @@ get_all_names() {
 	for url in "${video_streams[@]}"
 	do
 		# only get first 50 characters
-		name=$(get_name $url | head -c 50) 
+		name=$(get_name $url | head -c 50)
 		video_names+=("$name")
 	done
 }
@@ -56,28 +56,31 @@ get_all_names
 
 tput setaf 2
 
-clear
-echo ""
-echo "Tom's Video Player Script"
-echo ""
-
-length=${#video_names[@]}
-
-for (( i=0; i<${length}; i++ ))
+until [ "$selection" = "0" ]
 do
-	echo "		$i	${video_names[$i]}"
+	clear
+	echo ""
+	echo "Tom's Video Player Script"
+	echo ""
+
+	length=${#video_names[@]}
+
+	for (( i=0; i<${length}; i++ ))
+	do
+		echo "		$i	${video_names[$i]}"
+	done
+
+	echo ""
+	echo "		e	Edit"
+	echo "		x	Exit"
+	echo ""
+	echo -n "Enter selection: "
+	read selection
+	echo ""
+
+	case $selection in
+		"e") edit_list ;;
+		"x") clear && exit ;;
+		*) play_video $selection;;
+	esac
 done
-
-echo ""
-echo "		e	Edit"
-echo "		x	Exit"
-echo ""
-echo -n "Enter selection: "
-read selection
-echo ""
-
-case $selection in
-	"e") edit_list ;;
-	"x") clear && exit ;;
-	*) play_video $selection;;
-esac
